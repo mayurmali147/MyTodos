@@ -1,0 +1,52 @@
+<ion-header>
+  	<ion-navbar>
+    	<ion-title>
+      	Todo
+    	</ion-title>
+
+    	<ion-buttons end>	<!-- end is use to print output at the end -->
+    		<!-- *ngIf="!reorderIsEnable" is check if reorderIsEnable == false then print edit button else print done button -->
+    		<button (click)="toggleReorder()" ion-button *ngIf="!reorderIsEnable">Edit</button>
+    		<button (click)="toggleReorder()" ion-button *ngIf="reorderIsEnable">Done</button>
+    		<button ion-button (click)="openTodoAlert()">
+    		  <ion-icon name="add"></ion-icon>
+    		</button>
+    	</ion-buttons>
+
+  	</ion-navbar>
+</ion-header>
+
+<ion-content padding>
+	<!-- if you type/add only reorder attribute, then bydefault reorder is enable -->
+	<ion-list [reorder]="reorderIsEnable" (ionItemReorder)="itemReordered($event)">	<!-- reorderIsEnable is variable name which are defined in home.ts -->
+		<ion-item-sliding *ngFor="let todo of todos; let todoIndex = index">	
+			<!-- <ion-item-sliding> tag is used to make item slidable. we can slide item 
+				in let todoIndex = index. index is inbuilt var that return index of current item. so we store it into todoIndex
+			-->
+
+			<ion-item-options side="left">		<!-- allowed item to slide from left to right. -->
+				<button ion-button (click)="editTodo(todoIndex)">
+					<ion-icon name="create"></ion-icon>
+				</button>
+			</ion-item-options>
+
+	  		<ion-item>{{todo}}</ion-item>
+
+			<ion-item-options side="right">		<!-- allowed item to slide from right to left. -->
+				<button color="danger" ion-button (click)="archiveTodo(todoIndex)">
+					<ion-icon name="trash"></ion-icon>
+				</button>
+			</ion-item-options>
+		</ion-item-sliding>
+
+	</ion-list>
+
+	<ion-fab right bottom>
+		<!-- <button ion-fab (click)="goToArchivePage()"> -->	<!-- navigate through click event -->
+		<button ion-fab [navPush]="archivedTodosPage">		<!-- navigate through navPush -->
+			<!-- `archivedTodosPage` is a variable defined in home.ts -->
+			<ion-icon name="archive"></ion-icon>
+		</button>
+
+	</ion-fab>
+</ion-content>
